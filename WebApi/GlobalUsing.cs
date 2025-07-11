@@ -1,0 +1,10 @@
+﻿global using moiphim.Services.Results;
+global using moiphim.Services.Services.Implementations;
+global using moiphim.Services.Services.Interfaces;
+global using moiphim.Services.Models;
+global using moiphim.Common.Errors;
+global using moiphim.DataAccess.Entities;
+global using Microsoft.AspNetCore.Mvc;
+global using moiphim.Entities;
+global using moiphim.Services.Models.RequestModels;
+global using moiphim.Services.Models.ResponseModels;
