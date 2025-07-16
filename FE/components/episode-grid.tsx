@@ -5,12 +5,13 @@ import Image from "next/image"
 import Link from "next/link"
 
 interface Episode {
-  id: number
-  title: string
-  description: string
-  duration: string
-  thumbnail: string
-  airDate: string
+  id: number;
+  movieId: string;
+  episodeName: string;
+  slug: string;
+  filename: string;
+  linkEmbed: string;
+  linkM3u8: string;
 }
 
 interface EpisodeGridProps {
@@ -33,8 +34,9 @@ export function EpisodeGrid({ episodes }: EpisodeGridProps) {
           >
             <div className="relative aspect-video overflow-hidden">
               <Image
-                src={episode.thumbnail || "/placeholder.svg"}
-                alt={episode.title}
+                // src={episode.thumbnail || "/placeholder.svg"}
+                src={"https://www.britannica.com/topic/Get-Out"}
+                alt={episode.episodeName}
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -45,12 +47,12 @@ export function EpisodeGrid({ episodes }: EpisodeGridProps) {
               </div>
 
               {/* Duration Badge */}
-              <div className="absolute bottom-2 right-2">
+              {/* <div className="absolute bottom-2 right-2">
                 <Badge className="bg-black/70 text-white border-0 text-xs">
                   <Clock className="w-3 h-3 mr-1" />
                   {episode.duration}
                 </Badge>
-              </div>
+              </div> */}
 
               {/* Play Overlay */}
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -65,10 +67,10 @@ export function EpisodeGrid({ episodes }: EpisodeGridProps) {
 
             <div className="p-4">
               <h4 className="font-semibold text-white mb-2 group-hover:text-orange-500 transition-colors">
-                {episode.title}
+                {episode.episodeName}
               </h4>
-              <p className="text-sm text-gray-400 line-clamp-2 mb-2">{episode.description}</p>
-              <p className="text-xs text-gray-500">Phát sóng: {episode.airDate}</p>
+              {/* <p className="text-sm text-gray-400 line-clamp-2 mb-2">{episode.description}</p>
+              <p className="text-xs text-gray-500">Phát sóng: {episode.airDate}</p> */}
             </div>
           </div>
         ))}

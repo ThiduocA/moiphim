@@ -6,10 +6,13 @@ import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 
 interface Movie {
-  id: number
-  title: string
-  currentEpisode: number
-  episodes: string
+  id: number;
+  movieId: string;
+  episodeName: string;
+  slug: string;
+  filename: string;
+  linkEmbed: string;
+  linkM3u8: string;
 }
 
 interface VideoPlayerSectionProps {
@@ -46,21 +49,7 @@ export function VideoPlayerSection({ movie }: VideoPlayerSectionProps) {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
             <div className="text-6xl mb-4">🎬</div>
-            <h3 className="text-2xl font-bold mb-4">{movie.title}</h3>
-
-            {/* Korean Subtitles Simulation */}
-            <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 max-w-2xl">
-              <div className="bg-black/80 px-6 py-3 rounded-lg mb-2">
-                <p className="text-white text-lg text-center">오늘 정말 좋은 날씨네요. 같이 산책하러 갈까요?</p>
-              </div>
-              <div className="bg-black/60 px-4 py-2 rounded">
-                <p className="text-yellow-300 text-center">
-                  (Không liên quan đến sự việc
-                  <br />
-                  hay có nhận có thật nào.)
-                </p>
-              </div>
-            </div>
+            <h3 className="text-2xl font-bold mb-4">{movie.episodeName}</h3>
           </div>
         </div>
 

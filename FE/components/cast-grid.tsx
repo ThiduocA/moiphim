@@ -1,10 +1,5 @@
 import Image from "next/image"
-
-interface CastMember {
-  name: string
-  character: string
-  avatar: string
-}
+import { CastMember } from "@/types/movie"
 
 interface CastGridProps {
   cast: CastMember[]
@@ -16,8 +11,8 @@ export function CastGrid({ cast }: CastGridProps) {
       <h3 className="text-xl font-bold text-white">Diễn viên</h3>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {cast.map((member, index) => (
-          <div key={index} className="group text-center">
+        {cast.map((member) => (
+          <div key={member.id} className="group text-center">
             <div className="relative aspect-square rounded-lg overflow-hidden mb-3 bg-gray-700">
               <Image
                 src={member.avatar || "/placeholder.svg"}

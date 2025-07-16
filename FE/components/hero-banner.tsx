@@ -3,17 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
 import Link from "next/link"
-
-interface Movie {
-  id: number
-  title: string
-  genre: string
-  rating: number
-  year: number
-  poster: string
-  backdrop?: string
-  description?: string
-}
+import { Movie, formatGenre } from "@/types/movie"
 
 interface HeroBannerProps {
   movie: Movie
@@ -25,7 +15,7 @@ export function HeroBanner({ movie }: HeroBannerProps) {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src={movie.backdrop || "/placeholder.svg?height=600&width=1200"}
+          src={movie.backdrop || movie.poster || "/placeholder.svg?height=600&width=1200"}
           alt={movie.title}
           fill
           className="object-cover"
@@ -53,7 +43,7 @@ export function HeroBanner({ movie }: HeroBannerProps) {
 
           <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white">{movie.title}</h1>
 
-          <p className="text-lg text-gray-300 mb-2">{movie.genre}</p>
+          <p className="text-lg text-gray-300 mb-2">{formatGenre(movie.genre)}</p>
 
           {movie.description && (
             <p className="text-gray-400 mb-8 text-lg leading-relaxed max-w-xl">{movie.description}</p>
@@ -66,14 +56,16 @@ export function HeroBanner({ movie }: HeroBannerProps) {
                 Xem Ngay
               </Button>
             </Link>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-gray-400 text-gray-300 hover:bg-gray-800 hover:text-white bg-transparent px-8"
-            >
-              <Info className="w-5 h-5 mr-2" />
-              Thông Tin
-            </Button>
+            <Link href={`/movie/${movie.id}`}>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-gray-400 text-gray-300 hover:bg-gray-800 hover:text-white bg-transparent px-8"
+              >
+                <Info className="w-5 h-5 mr-2" />
+                Thông Tin
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

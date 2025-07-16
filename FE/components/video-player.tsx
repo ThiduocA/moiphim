@@ -6,10 +6,13 @@ import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 
 interface Movie {
-  id: number
-  title: string
-  videoUrl: string
-  episodes?: string
+  id: number;
+  movieId: string;
+  episodeName: string;
+  slug: string;
+  filename: string;
+  linkEmbed: string;
+  linkM3u8: string;
 }
 
 interface VideoPlayerProps {
@@ -48,18 +51,18 @@ export function VideoPlayer({ movie }: VideoPlayerProps) {
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
           <div className="text-center">
             <div className="text-6xl mb-4">🎬</div>
-            <h3 className="text-xl font-semibold mb-2">{movie.title}</h3>
-            <p className="text-gray-400 mb-4">Tập hiện tại: {movie.episodes || "1/1"}</p>
+            <h3 className="text-xl font-semibold mb-2">{movie.episodeName}</h3>
+            <p className="text-gray-400 mb-4">Tập hiện tại: {movie.id || "1/1"}</p>
 
             {/* Korean Subtitle Simulation */}
-            <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 bg-black/70 px-4 py-2 rounded">
+            {/* <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 bg-black/70 px-4 py-2 rounded">
               <p className="text-white text-center">오늘 정말 좋은 날씨네요. 같이 산책하러 갈까요?</p>
               <p className="text-yellow-300 text-sm text-center mt-1">
                 (Không liên quan đến sự việc
                 <br />
                 hay có nhận có thật nào.)
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
 

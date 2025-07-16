@@ -4,19 +4,26 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
 interface Movie {
-  id: number
-  title: string
-  originalTitle?: string
-  genre: string
-  rating: number
-  year: number
-  country: string
-  duration: string
-  episodes: string
-  poster: string
-  description: string
-  director: string
-  cast: string[]
+  id: string;
+  name: string;
+  slug: string;
+  original_name?: string;
+  genre: string[];  // Array of genres from API
+  rating: number;
+  year: number;
+  country: string;
+  duration: string;
+  episodesCount: string;
+  status: string;
+  poster_url: string;
+  thumb_url: string;
+  backdrop?: string;
+  description: string;
+  director: string;
+  cast: string[];  // API returns array of cast names
+  videoUrl?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface MovieInfoProps {
@@ -29,14 +36,14 @@ export function MovieInfo({ movie }: MovieInfoProps) {
       <div className="flex flex-col space-y-4">
         {/* Movie Poster */}
         <div className="relative aspect-[3/4] w-full max-w-48 mx-auto">
-          <Image src={movie.poster || "/placeholder.svg"} alt={movie.title} fill className="object-cover rounded-lg" />
+          <Image src={movie.poster_url || "/placeholder.svg"} alt={movie.original_name || "abc"} fill className="object-cover rounded-lg" />
         </div>
 
         {/* Movie Details */}
         <div className="space-y-3">
           <div>
-            <h2 className="text-xl font-bold text-white mb-1">{movie.title}</h2>
-            {movie.originalTitle && <p className="text-sm text-gray-400">{movie.originalTitle}</p>}
+            <h2 className="text-xl font-bold text-white mb-1">{movie.original_name}</h2>
+            {movie.original_name && <p className="text-sm text-gray-400">{movie.original_name}</p>}
           </div>
 
           {/* Rating */}
@@ -62,7 +69,7 @@ export function MovieInfo({ movie }: MovieInfoProps) {
 
             <div className="flex items-center space-x-2 text-gray-300">
               <Film className="w-4 h-4 text-gray-400" />
-              <span>{movie.episodes}</span>
+              <span>{movie.episodesCount}</span>
             </div>
 
             <div className="flex items-center space-x-2 text-gray-300">

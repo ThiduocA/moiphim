@@ -1,18 +1,19 @@
 import { Star, Calendar, Globe, Clock, Film, User } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Category } from "@/types/movie"
 
 interface Movie {
   title: string
   originalTitle: string
-  genre: string
+  category: Category[]
   rating: number
   year: number
   country: string
   duration: string
   description: string
   director: string
-  cast: string[]
+  actor: string[]
   episodesCount: string
 }
 
@@ -67,11 +68,15 @@ export function MovieDetailsSection({ movie }: MovieDetailsSectionProps) {
         <div>
           <h3 className="text-white font-semibold mb-2">Thể loại:</h3>
           <div className="flex flex-wrap gap-2">
-            {movie.genre.split(", ").map((g, index) => (
-              <Badge key={index} variant="outline" className="border-gray-600 text-gray-300">
-                {g}
-              </Badge>
-            ))}
+            {movie.category.map((g) => (
+                    <Badge
+                      key={g.id}
+                      variant="outline"
+                      className="border-gray-500 text-gray-300"
+                    >
+                      {g.name}
+                    </Badge>
+                  ))}
           </div>
         </div>
 
@@ -96,7 +101,7 @@ export function MovieDetailsSection({ movie }: MovieDetailsSectionProps) {
               <User className="w-4 h-4 text-gray-400" />
               <span className="font-semibold text-white">Diễn viên:</span>
             </div>
-            <p className="text-gray-400">{movie.cast.join(", ")}</p>
+            <p className="text-gray-400">{movie.actor.join(", ")}</p>
           </div>
         </div>
 

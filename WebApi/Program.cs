@@ -13,6 +13,7 @@ builder.Services.AddDbContext<moiphimDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddHttpClient<IMovieService, MovieService>();
+builder.Services.AddScoped<IEpisodeService, EpisodeService>();
 builder.Services.AddHttpClient<MovieService>(client =>
 {
     client.DefaultRequestHeaders.Add("User-Agent",
@@ -23,6 +24,17 @@ builder.Services.AddHttpClient<MovieService>(client =>
     AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
     UseCookies = false
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000")
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,5 +49,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("AllowFrontend");
 
 app.Run();
