@@ -228,6 +228,8 @@ public class MovieItemResponse
     public string ThumbUrl { get; set; }
     [JsonPropertyName("year")]
     public int Year { get; set; }
+    [JsonPropertyName("episode_total")]
+    public int EpisodeTotal { get; set; }
     [JsonPropertyName("tmdb")]
     public TmdbResponse Tmdb { get; set; }
     [JsonPropertyName("imdb")]

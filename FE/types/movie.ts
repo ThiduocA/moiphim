@@ -8,7 +8,7 @@ export interface Movie {
   year: number;
   country: string;
   duration: string;
-  episodesCount: string;
+  episodes_total: string;
   status: string;
   poster_url: string;
   thumb_url: string;
@@ -24,7 +24,9 @@ export interface Movie {
 export interface Episode {
   id: number;
   movieId: string;
-  episodeName: string;
+  movie: any;
+  serverName: string; // "#Hà Nội (Vietsub)" hoặc "#Hà Nội (Lồng Tiếng)"
+  episodeName: string; // "Tập 01", "Tập 02", etc.
   slug: string;
   filename: string;
   linkEmbed: string;

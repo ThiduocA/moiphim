@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { MovieHeroSection } from "@/components/movie-hero-section"
 import { MovieTabs } from "@/components/movie-tabs"
-import { EpisodeGrid } from "@/components/episode-grid"
+import { EpisodeList } from "@/components/episode-grid"
 import { CastGrid } from "@/components/cast-grid"
 import { MovieComments } from "@/components/movie-comments"
 import { TrendingMoviesSidebar } from "@/components/trending-movies-sidebar"
@@ -15,7 +15,7 @@ interface MovieDetailContentProps {
   episodes: Episode[]
 }
 
-export function MovieDetailContent({ movieId, movie }: MovieDetailContentProps) {
+export function MovieDetailContent({ movieId, movie, episodes }: MovieDetailContentProps) {
   const [activeTab, setActiveTab] = useState("episodes")
 
   // Transform cast from string[] to object array for CastGrid component only
@@ -42,7 +42,7 @@ export function MovieDetailContent({ movieId, movie }: MovieDetailContentProps) 
 
           {/* Tab Content */}
           <div className="bg-gray-800 rounded-lg p-6">
-            {/* {activeTab === "episodes" && <EpisodeGrid episodes={episodes} />} */}
+            {activeTab === "episodes" && <EpisodeList movieId={movieId} episodes={episodes} />}
             {activeTab === "gallery" && (
               <div className="text-center py-12">
                 <p className="text-gray-400">Thư viện ảnh đang được cập nhật...</p>

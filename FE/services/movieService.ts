@@ -119,11 +119,78 @@ async getMovieById(id: string): Promise<ApiResponse<Movie[]>> {
 
   // Get movie episodes
   async getMovieEpisodes(movieId: string): Promise<ApiResponse<Episode[]>> {
-    return api.get<ApiResponse<Episode[]>>(`/Movie/${movieId}/episodes`);
+    try {
+      const url = `/Movie/${movieId}/episodes`
+      console.log(`[getMovieEpisodes] Fetching: ${url}`)
+
+      const response = await api.get<any>(url)
+      console.log("[getMovieEpisodes] Raw response:", response)
+
+      // Xử lý response theo cấu trúc thực tế từ API
+      let episodes: Episode[] = []
+      
+      if (response?.value && Array.isArray(response.value)) {
+        episodes = response.value
+      } else if (response?.data && Array.isArray(response.data)) {
+        episodes = response.data
+      } else if (Array.isArray(response)) {
+        episodes = response
+      } else {
+        console.warn("[getMovieEpisodes] Unknown response structure")
+        episodes = []
+      }
+
+      const success = response?.isSuccess === true && Array.isArray(episodes)
+      
+      console.log("[getMovieEpisodes] Parsed episodes:", episodes)
+      console.log("[getMovieEpisodes] Success:", success)
+
+      return {
+        success,
+        data: episodes
+      }
+
+    } catch (err) {
+      console.error("[getMovieEpisodes] Error:", err)
+      return {
+        success: false,
+        data: []
+      }
+    }
   },
 
   // Get episode by ID
-  async getEpisodeById(movieId: string, episodeId: number): Promise<ApiResponse<Episode>> {
-    return api.get<ApiResponse<Episode>>(`/Movie/${movieId}/episodes/${episodeId}`);
+async getEpisodeById(movieId: string, episodeId: number): Promise<ApiResponse<Episode>> {
+    try {
+      const url = `/Movie/${movieId}/episodes/${episodeId}`
+      console.log(`[getEpisodeById] Fetching: ${url}`)
+
+      const response = await api.get<any>(url)
+      console.log("[getEpisodeById] Raw response:", response)
+
+      let episode: Episode | null = null
+      
+      if (response?.value) {
+        episode = response.value
+      } else if (response?.data) {
+        episode = response.data
+      } else {
+        episode = response
+      }
+
+      const success = episode !== null
+
+      return {
+        success,
+        data: episode as Episode
+      }
+
+    } catch (err) {
+      console.error("[getEpisodeById] Error:", err)
+      return {
+        success: false,
+        data: {} as Episode
+      }
+    }
   }
 };

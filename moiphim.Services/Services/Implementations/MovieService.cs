@@ -572,6 +572,7 @@ public class MovieService : IMovieService
                 m.PosterUrl,
                 m.ThumbUrl,
                 m.Year,
+                m.EpisodeTotal,
                 m.ModifiedAt,
                 TMDBInfo = m.TMDBInfo != null ? new
                 {
@@ -609,6 +610,7 @@ public class MovieService : IMovieService
                 PosterUrl = m.PosterUrl,
                 ThumbUrl = m.ThumbUrl,
                 Year = (int)m.Year,
+                EpisodeTotal = (int)m.EpisodeTotal,
                 Tmdb = m.TMDBInfo != null ? new TmdbResponse
                 {
                     Type = m.TMDBInfo.Type,

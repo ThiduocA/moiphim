@@ -14,7 +14,7 @@ interface Movie {
   description: string
   director: string
   actor: string[]
-  episodesCount: string
+  episodes_total: string
 }
 
 interface MovieDetailsSectionProps {
@@ -60,7 +60,7 @@ export function MovieDetailsSection({ movie }: MovieDetailsSectionProps) {
           </div>
           <div className="flex items-center space-x-2 text-gray-300">
             <Film className="w-4 h-4 text-gray-400" />
-            <span>Số tập: {movie.episodesCount}</span>
+            <span>Số tập: {movie.episodes_total}</span>
           </div>
         </div>
 

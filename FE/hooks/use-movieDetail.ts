@@ -16,16 +16,13 @@ export function useMovieDetail(movieId: string) {
         setLoading(true);
         setError(null);
         
-        const [movieResponse, episodesResponse] = await Promise.all([
-          movieService.getMovieById(movieId),
-          movieService.getMovieEpisodes(movieId)
-        ]);
-        // const [movieResponse] = await Promise.all([
-        //   movieService.getMovieById(movieId),
-        //   movieService.getMovieEpisodes(movieId)
-        // ]);
+        console.log(`[useMovieDetail] Fetching movie and episodes for ID: ${movieId}`);
+        
+        // Fetch movie details
+        const movieResponse = await movieService.getMovieById(movieId);
+        console.log('[useMovieDetail] Movie response:', movieResponse);
 
-        if (movieResponse.success) {
+        if (movieResponse.success && movieResponse.data.length > 0) {
           let movieData = movieResponse.data[0];
           
           // Transform cast if API returns objects instead of strings
@@ -39,16 +36,33 @@ export function useMovieDetail(movieId: string) {
           }
           
           setMovie(movieData);
+          console.log('[useMovieDetail] Movie set successfully:', movieData);
         } else {
           setError(movieResponse.message || 'Failed to fetch movie');
+          console.error('[useMovieDetail] Movie fetch failed:', movieResponse);
         }
 
-        if (episodesResponse.success) {
-          console.log('Episodes fetched:', episodesResponse.data);
-          setEpisodes(episodesResponse.data);
+        // Fetch episodes
+        try {
+          const episodesResponse = await movieService.getMovieEpisodes(movieId);
+          console.log('[useMovieDetail] Episodes response:', episodesResponse);
+          
+          if (episodesResponse.success) {
+            setEpisodes(episodesResponse.data);
+            console.log('[useMovieDetail] Episodes set successfully:', episodesResponse.data);
+          } else {
+            console.warn('[useMovieDetail] Episodes fetch failed, but continuing:', episodesResponse);
+            setEpisodes([]);
+          }
+        } catch (episodeError) {
+          console.warn('[useMovieDetail] Episodes fetch error:', episodeError);
+          setEpisodes([]);
         }
+
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        const errorMessage = err instanceof Error ? err.message : 'An error occurred';
+        setError(errorMessage);
+        console.error('[useMovieDetail] General error:', err);
       } finally {
         setLoading(false);
       }

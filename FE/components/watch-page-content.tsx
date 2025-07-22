@@ -6,7 +6,8 @@ import { CommentsSection } from "@/components/comments-section"
 import { SidebarContent } from "@/components/sidebar-content"
 import { PromoBanner } from "@/components/promo-banner"
 import { RelatedMoviesGrid } from "@/components/related-movies-grid"
-import { Movie, Episode, formatGenre } from "@/types/movie"
+import { Movie, Episode } from "@/types/movie"
+import { useSearchParams } from "next/navigation"
 
 interface WatchPageContentProps {
   movieId: string
@@ -15,33 +16,56 @@ interface WatchPageContentProps {
 }
 
 export function WatchPageContent({ movieId, movie, episodes }: WatchPageContentProps) {
-  // Transform data for existing components that expect different format
+  const searchParams = useSearchParams()
+  const episodeParam = searchParams.get('episode')
+  const serverParam = searchParams.get('server') || 'vietsub' // default to vietsub
+  
+  // Filter episodes theo server
+  const availableServers = [...new Set(episodes.map(ep => ep.serverName))]
+  const currentServerEpisodes = episodes.filter(ep => 
+    serverParam === 'vietsub' 
+      ? ep.serverName.includes('Vietsub')
+      : ep.serverName.includes('Lồng Tiếng')
+  )
+  
+  // Tìm episode hiện tại
+  const currentEpisodeId = episodeParam ? parseInt(episodeParam) : 1
+  const currentEpisode = currentServerEpisodes.find(ep => {
+    // Extract episode number from episodeName (e.g., "Tập 01" -> 1)
+    const epNum = parseInt(ep.episodeName.replace('Tập ', ''))
+    return epNum === currentEpisodeId
+  }) || currentServerEpisodes[0]
+
+  // Transform data for video player
   const movieDataForVideoPlayer = {
-    // id: movie._id,
-    // title: movie.name,
-    // currentEpisode: 1,
-    // episodes: movie.episodesCount, // Use episodesCount from API
-    // videoUrl: movie.videoUrl || "https://example.com/video.mp4"
-      id: episodes.;
-      movieId: movieId;
-      episodeName: movie.name;
-      linkEmbed: string;
-      linkM3u8: string;
+    id: currentEpisode?.id || 1,
+    movieId: movieId,
+    episodeName: currentEpisode?.episodeName || movie.name,
+    serverName: currentEpisode?.serverName || "",
+    slug: currentEpisode?.slug || movie.slug,
+    filename: currentEpisode?.filename || "",
+    linkEmbed: currentEpisode?.linkEmbed || "",
+    linkM3u8: currentEpisode?.linkM3u8 || ""
   }
 
   const movieDataForDetails = {
     title: movie.name,
     originalTitle: movie.origin_name || movie.name,
-    category: movie.category, // Convert array to string
+    category: movie.category,
     rating: movie.rating,
     year: movie.year,
     country: movie.country,
     duration: movie.duration,
-    episodesCount: movie.episodesCount, // Make sure this property exists
+    episodes_total: movie.episodes_total,
     description: movie.description,
     director: movie.director,
-    actor: movie.actor // string array
+    actor: movie.actor
   }
+
+  console.log('Available servers:', availableServers)
+  console.log('Current server episodes:', currentServerEpisodes)
+  console.log('Current Episode Data:', currentEpisode)
+  console.log('Video Player Data:', movieDataForVideoPlayer)
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -58,7 +82,7 @@ export function WatchPageContent({ movieId, movie, episodes }: WatchPageContentP
           <PromoBanner />
 
           {/* Comments Section */}
-          <CommentsSection movieId={Number.parseInt(movieId)} />
+          {/* <CommentsSection movieId={Number.parseInt(movieId)} /> */}
 
           {/* Related Movies */}
           <RelatedMoviesGrid />
