@@ -57,7 +57,8 @@ namespace moiphim.Services.Services.Implementations
         {
             _logger.LogInformation("Executing method: {MethodName}, UserName: {UserName}",
             $"{nameof(UserService)}.{nameof(Login)}", model.UserName);
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email.ToLower() == model.UserName.ToLower());
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName.ToLower() == model.UserName.ToLower());
+            _logger.LogInformation("in4 user: {user}", $"{JsonConvert.SerializeObject(user)}");
             if (user == null || HashPassword(model.Password) != user.PasswordHash)
             {
                 return Result.Failure(UserErrors.InvalidCredentials);
@@ -95,7 +96,8 @@ namespace moiphim.Services.Services.Implementations
             {
             new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim("email", user.Email)
+            new Claim("email", user.Email),
+            new Claim("userName", user.UserName),
         };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]!));

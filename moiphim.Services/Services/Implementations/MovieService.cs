@@ -661,4 +661,31 @@ public class MovieService : IMovieService
             return Result.Failure(new Error("Error", ex.Message));
         }
     }
+
+    public async Task<Result> GetAllCategoriesAsync()
+    {
+        try
+        {
+            var categories = await _context.Categories
+                .Select(c => new CategoryItemResponse
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Slug = c.Slug
+                })
+                .ToListAsync();
+            if (categories == null || !categories.Any())
+            {
+                return Result.Failure(new Error("Not found", "No categories found"));
+            }
+            else
+            {
+                return Result.Success(categories);
+            }
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure(new Error("Error", ex.Message));
+        }
+    }
 }

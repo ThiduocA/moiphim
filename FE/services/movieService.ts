@@ -1,5 +1,6 @@
 import { api } from '@/lib/api';
-import { Movie, ApiResponse, Episode } from '@/types/movie';
+import { Movie, ApiResponse, Episode, Category } from '@/types/movie';
+import { get } from 'http';
 
 export const movieService = {
   // Get all movies with pagination and filters
@@ -69,6 +70,40 @@ async getMovieById(id: string): Promise<ApiResponse<Movie[]>> {
   async getMoviesByCategory(category: string, limit?: number): Promise<ApiResponse<Movie[]>> {
     const params = limit ? `?limit=${limit}` : '';
     return api.get<ApiResponse<Movie[]>>(`/Movie/category/${category}${params}`);
+  },
+
+  // Get all categories
+  async getCategories(): Promise<ApiResponse<Category[]>>{
+  try {
+    const url = `/Movie/categories`
+    console.log(`[getAllCategories] Fetching: ${url}`)
+
+    const response = await api.get<any>(url)
+
+    console.log("[getAllCategories] Raw response:", response)
+
+    // Sửa lại parsing theo structure thật của API
+    const items = response?.value ?? []
+    const success = response?.isSuccess === true && Array.isArray(items)
+
+    console.log("[getAllCategories] Parsed items:", items)
+    console.log("[getAllCategories] Success:", success)
+
+    // Đảm bảo return đúng structure mà component expect
+    return {
+      success,
+      data: items,
+      message: response?.error?.description || ''
+    }
+
+  } catch (err) {
+    console.error("[getAllCategories] Error:", err)
+    return {
+      success: false,
+      data: [],
+      message: 'Failed to fetch categories'
+    }
+  }
   },
   // Get movies by countries
   async getMoviesByCountry(country: string, limit?: number): Promise<ApiResponse<Movie[]>> {

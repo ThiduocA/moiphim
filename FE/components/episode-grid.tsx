@@ -68,9 +68,9 @@ export function EpisodeList({ episodes, movieId }: EpisodeListProps) {
           </Button>
           <Button
             size="sm"
-            variant={selectedServer === 'longtiem' ? "default" : "outline"}
-            onClick={() => setSelectedServer('longtiem')}
-            className="text-white"
+            variant={selectedServer === 'longtieng' ? "default" : "outline"}
+            onClick={() => setSelectedServer('longtieng')}
+            className="text-black"
           >
             Lồng Tiếng
           </Button>

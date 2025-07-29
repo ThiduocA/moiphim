@@ -37,4 +37,12 @@ public class MovieController : BaseController
             onSuccess: () => Ok(result),
             onFailure: error => NotFound(error));
     }
+    [HttpGet("categories")]
+    public async Task<IActionResult> GetAllCategory()
+    {
+        var result = await _movieService.GetAllCategoriesAsync();
+        return result.Match<IActionResult>(
+            onSuccess: () => Ok(result),
+            onFailure: error => BadRequest(error));
+    }
 }

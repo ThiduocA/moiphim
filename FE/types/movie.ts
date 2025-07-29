@@ -61,6 +61,7 @@ export interface Comment {
 export interface Category {
   id: string;
   name: string;
+  slug: string;
 }
 
 export interface ApiResponse<T> {

@@ -6,7 +6,7 @@ using moiphim.Services.Results;
 namespace moiphim.WebApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class AuthController : BaseController
 {
     private readonly ILogger<AuthController> _logger;

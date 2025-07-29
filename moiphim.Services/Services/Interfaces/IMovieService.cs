@@ -6,4 +6,5 @@ public interface IMovieService
 {
     Task<Result> LeechMoviesAsync(string apiUrl);
     Task<Result> GetAllMoviesAsync(GetAllMoviesRequest request);
+    Task<Result> GetAllCategoriesAsync();
 }
